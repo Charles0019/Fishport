@@ -1,3 +1,6 @@
+<?= $this->session->flashdata('register_customer'); ?>
+<?= $this->session->flashdata('register_customer_error'); ?>
+
 <body>
     <div class="container mt-5">
         <div class="row">
@@ -10,10 +13,15 @@
                         <div class="row">
                             <?php foreach ($result as $product) { ?>
                                 <div class="col-md-6 mb-2">
-                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
+                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>"
+                                        data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
                                         <div class="card-body">
-                                            <h5 class="card-title"><?php echo $product->product_name; ?></h5>
-                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-height: 100px;">
+                                            <h5 class="card-title">
+                                                <?php echo $product->product_name; ?>
+                                            </h5>
+                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>"
+                                                alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3"
+                                                style="max-height: 100px;">
                                         </div>
                                     </div>
                                 </div>
@@ -22,57 +30,32 @@
                     </div>
                 </div>
             </div>
+            <!--code for Selected products table-->
             <div class="col-md-6">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2>Cart</h2>
+                        <h2>Selected Products</h2> 
                     </div>
                     <div class="card-body">
                         <ul class="list-group" id="cart-items">
                             <!-- Cart items will be added here -->
                         </ul>
-                        <p>Total: ₱<span id="total">0.00</span></p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <p>Total: ₱<span id="total">0.00</span></p>
+                            <button type="button" class="btn btn-success" id="placeOrderButton" data-bs-toggle="modal"
+                                data-bs-target="#checkoutModal">Checkout</button>
+
+
+                        </div>
+
                     </div>
                 </div>
-            </div>
+            </div><!--end of code for Selected products table-->
+
         </div>
     </div>
 
-    <!-- Modal for entering weight and price -->
-    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="itemModalLabel">Enter Weight and Price for Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="itemForm">
-                      <div class="mb-3">
-                            <label for="price">Price:</label>
-                            <input type="text" class="form-control" id="price" name="price" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="weight">Weight:</label>
-                            <input type="text" class="form-control" id="weight" name="weight" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="addToCart">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-                                 <!-- place /checkout for existing customer order Modal -->
+    <!-- place /checkout for existing customer order Modal -->
 
     <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -168,6 +151,40 @@
             </div>
         </div>
     </div><!-- end of code for checkout for Walk-In Modal -->
+
+
+
+
+
+    <!-- Modal for entering weight and price -->
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalLabel">Enter Weight and Price for Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="itemForm">
+                        <div class="mb-3">
+                            <label for="price">Price:</label>
+                            <input type="text" class="form-control" id="price" name="price" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="weight">Weight:</label>
+                            <input type="text" class="form-control" id="weight" name="weight" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="addToCart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of Modal for entering weight and price -->
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
