@@ -260,7 +260,103 @@ class Main extends CI_Controller {
 		$this->load->model('customer_model');
 		$this->data['result'] = $this->customer_model->get_all_customers();
 		$this->load->view('main/header');
-		$this->load->view('main/customer', $this->data);
+		$this->load->view('main/dashboard', $this->data);
 		$this->load->view('main/footer');
 	}
+
+	function dashbaord()
+	{
+
+		$this->submit_walkin_order();
+		$this->load->view('main/header');
+		$this->load->view('main/dashbaord');
+		$this->load->view('main/footer');
+	}
+
+
+    public function submit_walkin_order() {
+        // Retrieve form data from POST request
+        $customer_fname = $this->input->post('customer_fname');
+        $customer_lname = $this->input->post('customer_lname');
+        $contact_no = $this->input->post('contact_no');
+        $payment_method = $this->input->post('payment_method');
+
+        // Insert the form data into the 'customer' table
+        $data = array(
+            'customer_fname' => $customer_fname,
+            'customer_lname' => $customer_lname,
+            'contact_no' => $contact_no,
+            'payment_method' => $payment_method,
+        );
+
+        $this->db->insert('customer', $data);
+
+        // You can also add additional logic here, such as sending a response or redirecting.
+
+        // Example response (you can customize this):
+        $response = array(
+            'status' => 'success',
+            'message' => 'Order placed successfully.',
+        );
+
+        echo json_encode($response);
+    }
+
+
+
+	
+}
+
+
+// application/controllers/OrderController.php
+
+class OrderController extends CI_Controller {
+    public function __construct() {
+        parent::__construct();
+        // Load the necessary model
+        $this->load->model('OrderModel');
+    }
+
+    public function placeOrder() {
+        // Get data from the form
+        $customerData = array(
+            'first_name' => $this->input->post('customer_fname'),
+            'last_name' => $this->input->post('customer_lname'),
+            'contact_number' => $this->input->post('contact_no'),
+            'payment_method' => $this->input->post('payment_method')
+        );
+
+        // Insert customer data into the database
+        $customerId = $this->OrderModel->insertCustomer($customerData);
+
+        if ($customerId) {
+            // Insert order data into the database (you will need to adapt this to your data structure)
+            $orderData = array(
+                'customer_id' => $customerId,
+                'total_amount' => $this->input->post('total_amount'),
+                // Add other order details here
+            );
+
+            $orderId = $this->OrderModel->insertOrder($orderData);
+
+            if ($orderId) {
+                // Insert order items into the database (loop through your cart items)
+                foreach ($this->input->post('cart_items') as $cartItem) {
+                    $orderItemData = array(
+                        'order_id' => $orderId,
+                        'product_name' => $cartItem['product_name'],
+                        'weight' => $cartItem['weight'],
+                        'price' => $cartItem['price'],
+                        // Add other item details here
+                    );
+
+                    $this->OrderModel->insertOrderItem($orderItemData);
+                }
+            }
+
+            // Redirect to a success page or do something else
+        } else {
+            // Handle the case where customer insertion failed
+        }
+    }
 }

@@ -30,4 +30,27 @@ class Customer_model extends CI_Model {
 		}
 		return $next_account_no;
 	}
+
+	
+
+
+	
+}
+
+// application/models/OrderModel.php
+
+class OrderModel extends CI_Model {
+    public function insertCustomer($data) {
+        $this->db->insert('customer_table', $data); // Replace 'customer_table' with your actual table name
+        return $this->db->insert_id();
+    }
+
+    public function insertOrder($data) {
+        $this->db->insert('order_table', $data); // Replace 'order_table' with your actual table name
+        return $this->db->insert_id();
+    }
+
+    public function insertOrderItem($data) {
+        $this->db->insert('order_item_table', $data); // Replace 'order_item_table' with your actual table name
+    }
 }
